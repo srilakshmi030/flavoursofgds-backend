@@ -1,7 +1,9 @@
 // City screen content keyed by city code. Replace with Azure PostgreSQL queries
 // and Azure Blob Storage URLs once the data layer is in place.
 // Media rules: photos are JPEG under 1 MB, videos are MP4 under 10 seconds.
-const BLOB_BASE_URL = 'https://flavoursofgds.blob.core.windows.net/media';
+const env = require('../config/env');
+
+const BLOB_BASE_URL = env.blobBaseUrl;
 
 const CITY_CONTENT = {
   blr: {

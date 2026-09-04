@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: flavoursofgds-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-flavoursofgds}
+      POSTGRES_USER: ${DB_USER:-flavours}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set in .env}
+    ports:
+      - '${DB_PORT:-5432}:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER:-flavours} -d ${DB_NAME:-flavoursofgds}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:

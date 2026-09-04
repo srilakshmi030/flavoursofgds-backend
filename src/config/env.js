@@ -10,6 +10,19 @@ module.exports = {
   nodeEnv: required('NODE_ENV', 'development'),
   corsOrigin: required('CORS_ORIGIN', 'http://localhost:3000'),
 
+  // Media host differs per environment (sandbox vs production storage account).
+  blobBaseUrl: required('BLOB_BASE_URL', ''),
+
+  db: {
+    host: required('DB_HOST', 'localhost'),
+    port: parseInt(required('DB_PORT', '5432'), 10),
+    name: required('DB_NAME', 'flavoursofgds'),
+    user: required('DB_USER', 'flavours'),
+    password: required('DB_PASSWORD', ''),
+    // Azure Database for PostgreSQL requires TLS; local Docker does not.
+    ssl: required('DB_SSL', 'false') === 'true',
+  },
+
   entra: {
     tenantId: required('ENTRA_TENANT_ID', ''),
     clientId: required('ENTRA_CLIENT_ID', ''),

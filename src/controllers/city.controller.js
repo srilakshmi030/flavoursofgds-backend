@@ -1,24 +1,24 @@
 const CITIES = require('../data/cities');
-const { getCityContent } = require('../services/content.service');
+const { getCity, getDashboard, getCollection } = require('../services/content.service');
 
-function resolveCity(req, res) {
+async function resolveCity(req, res) {
   const { cityCode } = req.params;
-  const content = getCityContent(cityCode);
-  if (!content) {
+  const city = await getCity(cityCode);
+  if (!city) {
     res.status(404).json({ message: `City '${cityCode}' is not supported` });
     return null;
   }
-  return content;
+  return city;
 }
 
-function sendCollection(req, res, collection, key) {
-  const content = resolveCity(req, res);
-  if (!content) return;
+async function sendCollection(req, res, collection, key) {
+  const city = await resolveCity(req, res);
+  if (!city) return;
 
-  const items = content[collection] || [];
+  const items = await getCollection(city.cityCode, collection);
   res.status(200).json({
-    cityCode: content.cityCode,
-    cityName: content.cityName,
+    cityCode: city.cityCode,
+    cityName: city.name,
     count: items.length,
     [key]: items,
   });
@@ -30,80 +30,79 @@ function listCities(req, res) {
 }
 
 // GET /api/cities/:cityCode/dashboard
-function getCityDashboard(req, res) {
-  const content = resolveCity(req, res);
-  if (!content) return;
+async function getCityDashboard(req, res) {
+  const city = await resolveCity(req, res);
+  if (!city) return;
 
-  const city = CITIES.find((item) => item.id === content.cityCode);
+  const dashboard = await getDashboard(city.cityCode);
 
   res.status(200).json({
-    cityCode: content.cityCode,
-    cityName: content.cityName,
-    state: city?.state || null,
-    country: city?.country || null,
-    ...content.dashboard,
+    cityCode: city.cityCode,
+    cityName: city.name,
+    state: city.state,
+    country: city.country,
+    ...dashboard,
   });
 }
 
 // GET /api/cities/:cityCode/street-food
-function listStreetFood(req, res) {
-  sendCollection(req, res, 'streetFood', 'streetFood');
+async function listStreetFood(req, res) {
+  await sendCollection(req, res, 'streetFood', 'streetFood');
 }
 
 // GET /api/cities/:cityCode/landmarks
-function listLandmarks(req, res) {
-  sendCollection(req, res, 'landmarks', 'landmarks');
+async function listLandmarks(req, res) {
+  await sendCollection(req, res, 'landmarks', 'landmarks');
 }
 
 // GET /api/cities/:cityCode/fine-dining
-function listFineDining(req, res) {
-  sendCollection(req, res, 'fineDining', 'restaurants');
+async function listFineDining(req, res) {
+  await sendCollection(req, res, 'fineDining', 'restaurants');
 }
 
 // GET /api/cities/:cityCode/recipes
-function listRecipes(req, res) {
-  sendCollection(req, res, 'recipes', 'recipes');
+async function listRecipes(req, res) {
+  await sendCollection(req, res, 'recipes', 'recipes');
 }
 
 // GET /api/cities/:cityCode/top-recipes - the three winning recipes for the city.
-function listTopRecipes(req, res) {
-  const content = resolveCity(req, res);
-  if (!content) return;
+async function listTopRecipes(req, res) {
+  const city = await resolveCity(req, res);
+  if (!city) return;
 
-  const topRecipes = [...(content.recipes || [])].sort((a, b) => a.rank - b.rank).slice(0, 3);
+  const recipes = (await getCollection(city.cityCode, 'recipes')).slice(0, 3);
 
   res.status(200).json({
-    cityCode: content.cityCode,
-    cityName: content.cityName,
-    count: topRecipes.length,
-    recipes: topRecipes,
+    cityCode: city.cityCode,
+    cityName: city.name,
+    count: recipes.length,
+    recipes,
   });
 }
 
 // GET /api/cities/:cityCode/videos
-function listVideos(req, res) {
-  sendCollection(req, res, 'videos', 'videos');
+async function listVideos(req, res) {
+  await sendCollection(req, res, 'videos', 'videos');
 }
 
 // GET /api/cities/:cityCode/photos
-function listPhotos(req, res) {
-  sendCollection(req, res, 'photos', 'photos');
+async function listPhotos(req, res) {
+  await sendCollection(req, res, 'photos', 'photos');
 }
 
 // GET /api/cities/:cityCode/winningRecipes - the ranked contest winners.
-function listWinningRecipes(req, res) {
-  const content = resolveCity(req, res);
-  if (!content) return;
+async function listWinningRecipes(req, res) {
+  const city = await resolveCity(req, res);
+  if (!city) return;
 
   const awards = ['Winner', '1st Runner-up', '2nd Runner-up'];
-  const winners = [...(content.recipes || [])]
-    .sort((a, b) => a.rank - b.rank)
+  const winners = (await getCollection(city.cityCode, 'recipes'))
     .slice(0, awards.length)
     .map((recipe, index) => ({ ...recipe, award: awards[index] }));
 
   res.status(200).json({
-    cityCode: content.cityCode,
-    cityName: content.cityName,
+    cityCode: city.cityCode,
+    cityName: city.name,
     count: winners.length,
     winningRecipes: winners,
   });

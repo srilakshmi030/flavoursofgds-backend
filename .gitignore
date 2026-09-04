@@ -4,3 +4,9 @@ npm-debug.log*
 *.log
 .DS_Store
 push-via-api.ps1
+
+# Generated content workbooks
+docs/*.xlsx
+
+# Large editorial source decks - share these out of band, not in git
+*.pdf
