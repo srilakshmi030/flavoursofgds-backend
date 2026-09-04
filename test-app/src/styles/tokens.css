@@ -1,0 +1,74 @@
+/* Design tokens - single source of truth for this app. Never hard-code values elsewhere. */
+:root {
+  /* Color palette */
+  --color-primary: #1a1a24;
+  --color-primary-hover: #2e2e3d;
+  --color-primary-dark: #101018;
+  --color-primary-light: #4a4a5c;
+  --color-on-primary: #ffffff;
+
+  --color-accent: #ffe600;
+  --color-accent-hover: #e6cf00;
+
+  --color-app-bg: #2f3441;
+  --color-surface: #ffffff;
+  --color-surface-muted: #eceef2;
+  --color-surface-raised: #f5f6f8;
+
+  --color-text: #1a1a24;
+  --color-text-muted: #5f6472;
+  --color-text-inverse: #ffffff;
+
+  --color-border: #dcdfe6;
+  --color-border-strong: #b9bec9;
+  --color-focus: #3d5afe;
+
+  --color-success: #1d7a4c;
+  --color-warning: #a86400;
+  --color-error: #b3261e;
+  --color-info: #1a5fb4;
+
+  /* Typography */
+  --font-family-base: 'Segoe UI', Calibri, Arial, sans-serif;
+
+  --font-size-xs: 0.6875rem;
+  --font-size-sm: 0.8125rem;
+  --font-size-base: 0.9375rem;
+  --font-size-md: 1.0625rem;
+  --font-size-lg: 1.375rem;
+  --font-size-xl: 1.75rem;
+  --font-size-2xl: 2.25rem;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.2;
+  --line-height-base: 1.5;
+  --line-height-relaxed: 1.7;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgba(26, 26, 36, 0.08);
+  --shadow-card: 0 2px 8px rgba(26, 26, 36, 0.1);
+  --shadow-modal: 0 12px 32px rgba(26, 26, 36, 0.24);
+
+  /* Layout */
+  --max-width-content: 420px;
+  --bottom-nav-height: 64px;
+  --top-bar-height: 56px;
+}

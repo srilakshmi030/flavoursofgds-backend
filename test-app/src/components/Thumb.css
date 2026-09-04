@@ -1,0 +1,28 @@
+.thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  object-fit: cover;
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-sm);
+}
+
+.thumb--empty {
+  color: var(--color-border-strong);
+  border: 1px solid var(--color-border);
+}
+
+.thumb--sm {
+  width: 56px;
+  height: 56px;
+}
+
+.thumb--md {
+  height: 72px;
+}
+
+.thumb--lg {
+  height: 160px;
+  border-radius: var(--radius-md);
+}
